@@ -10,7 +10,7 @@ public class Model implements Observable {
      * Instancia única de la clase Model
      */
     private static Model instance = null;
-
+//     private static Model instance = new Model();
     /**
      * Lista de coches en el parking
      */
