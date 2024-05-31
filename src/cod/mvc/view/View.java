@@ -8,8 +8,7 @@ public class View {
      * @param velocidad Velocidad del coche
      * @return true si se ha mostrado la velocidad
      */
-    public static boolean muestraVelocidad(String matricula, Integer velocidad) {
-        System.out.println("The speed of car " + matricula + " is " + velocidad);
-        return true;
+    public static void muestraVelocidad(String matricula, Integer velocidad) {
+        System.out.println("La velocidad del coche " + matricula + " es " + velocidad);
     }
 }
