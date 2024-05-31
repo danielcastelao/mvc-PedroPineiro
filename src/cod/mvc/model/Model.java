@@ -7,10 +7,32 @@ import java.util.ArrayList;
 public class Model implements Observable {
 
     /**
+     * Instancia única de la clase Model
+     */
+    private static Model instance = null;
+
+    /**
      * Lista de coches en el parking
      */
     private static ArrayList<Coche> parking = new ArrayList<>();
     private static ArrayList<Observer> observers = new ArrayList<Observer>();
+
+    /**
+     * Constructor privado vacío
+     */
+    private Model() {
+    }
+
+    /**
+     * Devuelve la instancia única de la clase Model
+     * @return Instancia única de la clase Model
+     */
+    public static Model getInstance() {
+        if (instance == null) {
+            instance = new Model();
+        }
+        return instance;
+    }
 
     /**
      * Crea un coche y lo añade al parking
