@@ -6,7 +6,7 @@ import cod.mvc.view.View;
 
 public class App {
     public static void main(String[] args) {
-        Model miModel = new Model();
+        Model miModel = Model.getInstance();
         Controller miController = new Controller(miModel);
 
         // Crear tres coches
@@ -20,5 +20,7 @@ public class App {
         // otro cambio de velocidad
         // sobrepasando la velocidad máxima
         miController.cambiarVelocidad("HYU 4567", 150, miModel);
+
+        View.muestraVelocidad("SBC 1234", 30);
     }
 }
