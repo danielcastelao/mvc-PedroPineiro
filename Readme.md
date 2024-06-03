@@ -18,26 +18,53 @@ Utiliza objetos coches, modifica la velocidad y la muestra
 
 ```mermaid
 classDiagram
-    class Coche {
-        String: matricula
-        String: modelo
-        Integer: velocidad
+    class Model {
+        -ArrayList<Coche> parking
+        -ArrayList<Observer> observers
+        +static Model getInstance()
+        +static Coche crearCoche(String, String)
+        +static Coche getCoche(String)
+        +static Integer subirVelocidad(String, int)
+        +static Integer bajarVelocidad(String, int)
+        +static int getVelocidad(String)
+        +void addObserver(Observer)
+        +void removeObserver(Observer)
+        +void notifyObservers(Coche)
+        +void verCoche(Coche)
     }
-      class Controller{
-          +main()
-      }
-      class View {+muestraVelocidad(String, Integer)}
-      class Model {
-          ArrayList~Coche~: parking
-          +crearCoche(String, String, String)
-          +getCoche(String)
-          +cambiarVelocidad(String, Integer)
-          +getVelocidad(String)
-      }
-    Controller "1" *-- "1" Model : association
-    Controller "1" *-- "1" View : association
-    Model "1" *-- "1..n" Coche : association
-      
+    class Coche {
+        -String matricula
+        -String modelo
+        -int velocidad
+    }
+    class Controller {
+        -Model MODEL
+        +void crearCoche(String, String)
+        +void subirVelocidad(String, Integer)
+        +void bajarVelocidad(String, Integer)
+        +void verCoche(Coche)
+    }
+    class Observer {
+        +void update(Coche)
+        +void verCoche(Coche)
+    }
+    class Observable {
+        +void addObserver(Observer)
+        +void removeObserver(Observer)
+    }
+    class View {
+        +static boolean muestraVelocidad(String, Integer)
+        +static void mostrarCoche(Coche)
+    }
+    class ObsVelocidad {
+        +void update(Coche)
+        +void verCoche(Coche)
+    }
+    Model -- "*" Observer : observa
+    Model -- "*" Coche : contiene
+    Controller -- Model : usa
+    ObsVelocidad --|> Observer
+    Observable <|.. Model
 ```
 
 ---
@@ -49,34 +76,13 @@ Ejemplo básico del procedimiento, sin utilizar los nombres de los métodos
 
 ```mermaid
 sequenceDiagram
-    participant Model
-    participant Controller
-    participant View
-    Controller->>Model: Puedes crear un coche?
-    activate Model
-    Model-->>Controller: Creado!
-    deactivate Model
-    Controller->>+View: Muestra la velocidad, porfa
-    activate View
-    View->>-View: Mostrando velocidad
-    View-->>Controller: Listo!
-    deactivate View
-```
-
-El mismo diagrama con los nombres de los métodos
-
-```mermaid
-sequenceDiagram
-    participant Model
-    participant Controller
-    participant View
-    Controller->>Model: crearCoche("Mercedes", "BXK 1234")
-    activate Model
-    Model-->>Controller: Coche
-    deactivate Model
-    Controller->>+View: muestraVelocidad("BXK 1234", velocidad)
-    activate View
-    View->>-View: System.out.println()
-    View-->>Controller: boolean
-    deactivate View
+    Controller ->> Model: crearCoche("1234ABC", "Seat")
+    Model ->> Model: crearCoche("1234ABC", "Seat")
+    Model ->> Controller: Coche creado
+    Controller ->> Model: subirVelocidad("1234ABC", 10)
+    Model ->> Model: subirVelocidad("1234ABC", 10)
+    Model ->> Controller: Velocidad subida
+    Controller ->> Model: verCoche("1234ABC")
+    Model ->> Model: verCoche("1234ABC")
+    Model ->> Controller: Coche mostrado
 ```
