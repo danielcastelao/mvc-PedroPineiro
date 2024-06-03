@@ -64,19 +64,61 @@ public class Model implements Observable {
 
     /**
      * Cambia la velocidad de un coche
-     *
      * @param matricula Matrícula del coche
      * @param velocidad Nueva velocidad
+     * @param model Modelo
+     * @return Nueva velocidad o null si no existe el coche
      */
     public static Integer cambiarVelocidad(String matricula, int velocidad, Model model) {
         Coche c = getCoche(matricula);
         if (c != null) {
-            c.velocidad = velocidad;
-            model.notifyObservers(getCoche(matricula), model);
+            if (c.velocidad > velocidad) {
+                bajarVelocidad(matricula, c.velocidad - velocidad, model);
+            } else {
+                subirVelocidad(matricula, velocidad + c.velocidad, model);
+            }
+            model.notifyObservers(c, model);
             return velocidad;
         }
         return null;
     }
+
+    /**
+     * Sube la velocidad de un coche
+     *
+     * @param matricula Matrícula del coche
+     * @param v         Velocidad a subir
+     * @param model     Modelo
+     * @return Nueva velocidad o null si no existe el coche
+     */
+    public static Integer subirVelocidad(String matricula, int v, Model model) {
+        Coche c = getCoche(matricula);
+        if (c != null) {
+            c.velocidad += v;
+            model.notifyObservers(getCoche(matricula), model);
+            return c.velocidad;
+        }
+        return null;
+    }
+
+    /**
+     * Baja la velocidad de un coche
+     *
+     * @param matricula Matrícula del coche
+     * @param v         Velocidad a bajar
+     * @param model     Modelo
+     * @return Nueva velocidad o null si no existe el coche
+     */
+    public static Integer bajarVelocidad(String matricula, int v, Model model) {
+        Coche c = getCoche(matricula);
+        if (c != null) {
+            c.velocidad -= v;
+            model.notifyObservers(getCoche(matricula), model);
+            return c.velocidad;
+        }
+        return null;
+    }
+
 
     /**
      * Obtiene la velocidad de un coche
